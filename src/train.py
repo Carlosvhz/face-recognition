@@ -1,3 +1,8 @@
+# Para hacer la red neuronal
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.optimizers import RMSprop
+
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
@@ -6,6 +11,9 @@ import cv2
 import pickle
 from PIL import Image
 
+#
+
+#
 x_train = []
 y_train = []
 labelId = {}
