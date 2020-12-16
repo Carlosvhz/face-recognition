@@ -1,10 +1,18 @@
+# Para procesar la imagen
 import numpy as np
 import cv2
+
+# Para cargar el modelo
+from tensorflow.keras.models import model_from_yaml
+
+# Para importar los labels
 import pickle
 
 face = cv2.CascadeClassifier(
     'C:/Users/carlo/AppData/Local/Programs/Python/Python37/Lib/site-packages/cv2/data/haarcascade_frontalface_default.xml'
 )
+
+# Recognizer
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 recognizer.read('model.yml')
 
@@ -33,9 +41,6 @@ while (True):
         id_, conf = recognizer.predict(img_gray)
         if conf >= 45 and conf <= 85:
             print(labels[id_])
-
-        img = "image.png"
-        cv2.imwrite(img, img_gray)
 
         # Para el rectángulo al detectar el rostro
         rec_color = (255, 0, 0)

@@ -2,6 +2,10 @@
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.optimizers import RMSprop
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.optimizers import RMSprop
+from tensorflow.keras.models import model_from_yaml
 
 import numpy as np
 import tensorflow as tf
@@ -11,29 +15,45 @@ import cv2
 import pickle
 from PIL import Image
 
-#
-
-#
-x_train = []
-y_train = []
-labelId = {}
+x_train = []  # Data de entrenamiento
+y_train = []  # Y de entrenamiento
+labelId = {}  # ID de los labels
 currentLabel = 0
 
 face_classifier = cv2.CascadeClassifier(
     'C:/Users/carlo/AppData/Local/Programs/Python/Python37/Lib/site-packages/cv2/data/haarcascade_frontalface_default.xml'
 )
-recognizer = cv2.face.LBPHFaceRecognizer_create()
-
 INIT_DIR = os.path.dirname(os.path.abspath(__file__))
-IMG_DIR = os.path.join(INIT_DIR, "dataset")
+IMG_DIR = os.path.join(INIT_DIR, "datasets/training")
+
+# Modelo
+model = tf.keras.models.Sequential([
+    tf.keras.layers.Conv2D(16, (3, 3),
+                           activation='relu',
+                           input_shape=(200, 200, 3)),
+    tf.keras.layers.MaxPool2D(2, 2),
+    tf.keras.layers.Conv2D(32, (3, 3), activation='relu'),
+    tf.keras.layers.MaxPool2D(2, 2),
+    tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+    tf.keras.layers.MaxPool2D(2, 2),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(512, activation='relu'),
+    tf.keras.layers.Dense(1, activation='sigmoid')
+])
+
+model.compile(loss='binary_crossentropy',
+              optimizer=RMSprop(lr=0.001),
+              metrics=['accuracy'])
 
 for root, dirs, files in os.walk(IMG_DIR):
     for file in files:
         if file.endswith("PNG") or file.endswith("png") or file.endswith(
                 "jpg") or file.endswith("JPG"):
             path = os.path.join(root, file)
-            label = os.path.basename(root).replace(" ", "-").lower()
+            label = os.path.basename(root)
+            # label = os.path.basename(root).replace(" ", "-").lower()
 
+            # Guarda los labels en un arreglo
             if label in labelId:
                 pass
             else:
@@ -55,5 +75,12 @@ for root, dirs, files in os.walk(IMG_DIR):
 with open("labels.pickle", 'wb') as f:
     pickle.dump(labelId, f)
 
-recognizer.train(x_train, np.array(y_train))
-recognizer.save("model.yml")
+print(x_train)
+#model_fit = model.fit(x_train, np.array(y_train), steps_per_epoch=3, epochs=30)
+
+#model_yaml = model.to_yaml()
+
+#with open("model.yaml", "w") as f:
+#   f.write(model_yaml)
+
+#model.save_weights("weights.h5")
