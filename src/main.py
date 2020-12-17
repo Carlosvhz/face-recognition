@@ -35,7 +35,7 @@ while (True):
             print(labels[id_])
 
         img = "image.png"
-        cv2.imwrite(img, img_gray)
+        #cv2.imwrite(img, img_gray)
 
         # Para el rectángulo al detectar el rostro
         rec_color = (255, 0, 0)
