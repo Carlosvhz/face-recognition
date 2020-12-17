@@ -43,7 +43,8 @@ def initiateCamera(userName, userId, count):
         if key == ord('s'):
             if count <= 10:
                 saveImage(original_img, userName, userId, count)
-                cv2.putText(img, str(count)+"/ 10", (10, 100),
+                cv2.putText(img, str(count) + "/ 10", (10, 100),
+
                     cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36, 255, 12), 2)
                 count += 1
             else:
