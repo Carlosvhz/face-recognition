@@ -34,6 +34,9 @@ def initiateCamera(userName, userId, count):
                     cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36, 255, 12), 2)
         cv2.putText(img, "Q: Cerrar el creador de dataset", (10, 70),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36, 255, 12), 2)
+        cv2.putText(img,
+                    str(count - 1) + "/ 10", (10, 100),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36, 255, 12), 2)
         for (x, y, w, h) in faces:
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
@@ -42,10 +45,9 @@ def initiateCamera(userName, userId, count):
         key = cv2.waitKey(1) & 0xFF
         if key == ord('s'):
             if count <= 10:
-                saveImage(original_img, userName, userId, count)
-                cv2.putText(img, str(count) + "/ 10", (10, 100),
 
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36, 255, 12), 2)
+                saveImage(original_img, userName, userId, count)
+
                 count += 1
             else:
                 break
